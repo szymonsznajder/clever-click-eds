@@ -27,10 +27,6 @@
   --semibold-font-family-italic: var(--font-family-regularitalic), arial, sans-serif; /* Heading 4 italic */
   --extralight-font-family: var(--font-family-extralight), arial, sans-serif; /* Heading 3 */
   --extralight-font-family-italic: var(--font-family-extralightitalic), arial, sans-serif; /* Heading 3 italic */
-  
-  /* Default font set up */
-  font-size: 17px;
-  line-height: 27px;
 
   /* Font family for Mobile  */
   --body-font-size: 1rem; /* 18px */
@@ -127,6 +123,10 @@
 
    /* nav height */
   --nav-height: 60px;
+  
+  /* Default font set up */
+  font-size: 17px;
+  line-height: 27px;
 }
 
 /* desktop variables */
@@ -177,9 +177,9 @@
  /* ------------------------------------------------------------ */
 
 @font-face {
+  ascent-override: 95%;
   font-family: roboto-fallback;
   size-adjust: 100.06%;
-  ascent-override: 95%;
   src: local('arial');
 }
 
@@ -197,14 +197,14 @@ button {
 }
 
 body {
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  display: none;
   font-family:var(--body-font-family);
-  margin: 0;
-  padding: 0;
   font-size: var(--font-size);
   line-height: var(--line-height);
-  display: none;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale; 
+  margin: 0;
+  padding: 0; 
 }
 
 body.appear {
@@ -212,9 +212,9 @@ body.appear {
 }
 
 img {
+  height: auto;
   max-width: 100%;
   width: auto;
-  height: auto;
 }
 
 em, i {
@@ -228,13 +228,13 @@ h3,
 h4,
 h5,
 h6 {
+  color: var(--color-black);
   font-style: normal;
   font-weight: bold;
-  margin: 0;
-  line-height: 1.2;
-  word-break: break-word;
   hyphens: none;
-  color: var(--color-black);
+  line-height: 1.2;
+  margin: 0;
+  word-break: break-word;
 }
 
 h1,
@@ -267,9 +267,9 @@ h2 {
 
 /* Heading 3 L */
 h3 {
+  font-family: var(--font-family-extralight);
   font-size: var(--heading-font-size-m);
   line-height: var(--heading-line-height-l);
-  font-family: var(--font-family-extralight);
   margin-bottom: var(--spacing-s);
   
   @media (width >= 900px) {
@@ -284,9 +284,9 @@ h3 {
 
 /* Heading 4 M */
 h4 {
+  font-family: var(--font-family-regular);
   font-size: var(--heading-font-size-m);
   line-height: var(--heading-line-height-m);
-  font-family: var(--font-family-regular);
   margin-bottom: var(--spacing-xs);
   
   @media (width >= 900px) {
@@ -301,9 +301,9 @@ h4 {
 
 /* Heading 5 S */
 h5 {
+  font-family: var(--font-family-bold);
   font-size: var(--heading-font-size-s);
   line-height: var(--heading-line-height-s);
-  font-family: var(--font-family-bold);
   margin-bottom: var(--spacing-xxs);
   
   @media (width >= 900px) {
@@ -318,9 +318,9 @@ h5 {
 
 /* Heading 6 XS */
 h6 {
+  font-family: var(--font-family-regular);
   font-size: var(--heading-font-size-xs);
   line-height: var(--heading-line-height-xs);
-  font-family: var(--font-family-regular);
   margin-bottom: var(--spacing-xxs);
   
   @media (width >= 900px) {
@@ -370,12 +370,12 @@ strong, b {
 }
 
 main .section {
-  max-width: var(--page-max-width);
-  margin-inline: auto;
-  padding: var(--spacing-xxl) var(--spacing-m);
   background: var(--color-white);
   box-shadow: 0 0 0 100vmax var(--color-white);
   clip-path: inset(-1px -100vmax);
+  margin-inline: auto;
+  max-width: var(--page-max-width);
+  padding: var(--spacing-xxl) var(--spacing-m);
 }
 
 @media (width >= 900px) {
@@ -420,18 +420,18 @@ code {
 }
 
 pre code {
-  font-size: 14px;
   border: unset;
+  font-size: 14px;
 }
 
 code:not(pre > code) {
+  background-color: var(--color-space-gray);
+  border: 1px solid var(--color-wild-seal);
+  border-radius: 4px;
+  color: var(--color-wild-seal);
   font-size: var(--body-font-size-s);
   overflow-wrap: break-word;
-  border: 1px solid var(--color-wild-seal);
-  background-color: var(--color-space-gray);
-  color: var(--color-wild-seal);
   padding: var(--spacing-xs) var(--spacing-xxl);
-  border-radius: 4px;
 }
 
 @media (width >= 600px) {
@@ -443,37 +443,37 @@ code:not(pre > code) {
 /* icon style reset for updated decorateIcons function
 as height expanded weirdly */
 .icon svg {
-  height: auto;
   aspect-ratio: 1 / 1;
+  height: auto;
   object-fit: contain;
 }
 
 /* buttons */
 a.button:any-link {
-    display: inline-block;
+    appearance: none;
     background-color: var(--color-nocturnal-blue);
+    background-position: 100% 100%;
+    border: 2px solid transparent;
+    border-radius: 3px;
+    box-sizing: border-box;
     color: var(--color-white);
-    padding: var(--spacing-xs);
+    display: inline-block;
     font-family: var(--heading-font-family);
     font-size: var(--heading-font-size-s);
     line-height: var(--heading-line-height-s);
-    border-radius: 3px;
-    box-sizing: border-box;
-    text-decoration: none!important;
     margin: 0;
-    appearance: none;
-    border: 2px solid transparent;
+    padding: var(--spacing-xs);
     text-align: center;
+    text-decoration: none!important;
     transition: all .3s ease;
-    background-position: 100% 100%;
     width: 170px;
 
     &:hover,
     &:focus {
-      text-decoration: none;
       background-color: var(--color-white);
       border: 2px solid var(--color-nocturnal-blue);
       color: var(--color-nocturnal-blue);
+      text-decoration: none;
     }
 
     @media (width >= 900px) {
@@ -500,10 +500,10 @@ a.button:any-link {
 }
 
 main > .section:not(.hero-container):first-child > div {
-  max-width: 680px;
-  margin: var(--spacing-l) auto;
   display: flex;
   flex-direction: column;
+  margin: var(--spacing-l) auto;
+  max-width: 680px;
 }
 
 main .section:not(.hero-container):first-child > div {
@@ -546,50 +546,4 @@ main .section:not(.hero-container):first-child > div {
  /* ------------------------------------------------------------------------ */
  /* COMWRAP STYLE ENDS */
  /* ------------------------------------------------------------------------ */
- header, footer {
-  display: none;
-}
-
-/* Soming soon page */
-.hero-home.coming-soon .hero-title {
-  min-height: auto;
-  max-width: 700px;
-}
-
-.hero-home.coming-soon p {
-  font-size: var(--heading-font-size-m);
-}
-
-@media (width <= 900px) {
-  .hero-home.coming-soon .hero-image {
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    width: 100vw;
-    height: 100vh;
-    background-image: url('/images/comwrap-holding-mobile-least.jpg') !important;
-    background-repeat: no-repeat;
-    background-size: cover;
-    background-position: center center;
-  }
-
-  .hero-home.coming-soon .hero-item > div {
-    margin: auto 0 0;
-  }
-}
-
-.icon-comwrap-reply-logo-wht {
-  display: block;
-  width: 200px;
-}
-
-.hero-container:has(.hero-wrapper),
-.hero-wrapper:has(.cover-page) {
-  height: 100%;
-}
-
-.cover-page {
-  height: 100%;
-  max-height: 100%;
-}
+ 

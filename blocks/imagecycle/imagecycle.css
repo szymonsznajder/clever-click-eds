@@ -1,0 +1,60 @@
+/* Block configuration */
+.imagecycle {
+  --image-cycle-bg: #e6f3ff;
+  --image-cycle-dot-size: 12px;
+  --image-cycle-dot-color: #666;
+  --image-cycle-dot-active: #000;
+  --image-cycle-spacing: 1rem;
+}
+
+/* Base styles */
+.imagecycle-wrapper {
+  background-color: var(--image-cycle-bg);
+  padding: var(--image-cycle-spacing);
+  position: relative;
+}
+
+/* Image container */
+.imagecycle-image {
+  height: 0;
+  overflow: hidden;
+  padding-bottom: 56.25%; /* 16:9 aspect ratio */
+  position: relative;
+  width: 100%;
+}
+
+.imagecycle-image img {
+  height: 100%;
+  left: 0;
+  object-fit: cover;
+  opacity: 0;
+  position: absolute;
+  top: 0;
+  transition: opacity 0.3s ease;
+  width: 100%;
+}
+
+.imagecycle-image img.active {
+  opacity: 1;
+}
+
+/* Navigation dots */
+.imagecycle-dots {
+  display: flex;
+  gap: 0.5rem;
+  justify-content: center;
+  margin-top: var(--image-cycle-spacing);
+}
+
+.imagecycle-dot {
+  background-color: var(--image-cycle-dot-color);
+  border-radius: 50%;
+  cursor: pointer;
+  height: var(--image-cycle-dot-size);
+  transition: background-color 0.3s ease;
+  width: var(--image-cycle-dot-size);
+}
+
+.imagecycle-dot.active {
+  background-color: var(--image-cycle-dot-active);
+} 
