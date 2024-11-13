@@ -1,4 +1,4 @@
-const CONFIG = {
+const HERO_CONFIG = {
   SLIDE_INTERVAL: 9000,
   SELECTORS: {
     SLIDE: '.hero-slide',
@@ -19,13 +19,16 @@ const CONFIG = {
     DOTS: 'hero-dots',
     DOT: 'hero-dot',
     ACTIVE: 'active'
+  },
+  ARIA_LABELS: {
+    SLIDE: 'Go to slide'
   }
 };
 
 class HeroCarousel {
   constructor(element) {
     this.element = element;
-    this.slides = [...element.querySelectorAll(CONFIG.SELECTORS.SLIDE)];
+    this.slides = [...element.querySelectorAll(HERO_CONFIG.SELECTORS.SLIDE)];
     this.currentIndex = 0;
     this.interval = null;
     
@@ -41,16 +44,15 @@ class HeroCarousel {
 
   createNavigation() {
     const nav = document.createElement('div');
-    nav.className = CONFIG.CLASSES.NAVIGATION;
+    nav.className = HERO_CONFIG.CLASSES.NAVIGATION;
 
-    // Create dots
     const dots = document.createElement('div');
-    dots.className = CONFIG.CLASSES.DOTS;
+    dots.className = HERO_CONFIG.CLASSES.DOTS;
     
     this.slides.forEach((_, index) => {
       const dot = document.createElement('button');
-      dot.className = CONFIG.CLASSES.DOT;
-      dot.setAttribute('aria-label', `Go to slide ${index + 1}`);
+      dot.className = HERO_CONFIG.CLASSES.DOT;
+      dot.setAttribute('aria-label', `${HERO_CONFIG.ARIA_LABELS.SLIDE} ${index + 1}`);
       dot.addEventListener('click', () => this.goToSlide(index));
       dots.appendChild(dot);
     });
@@ -61,14 +63,14 @@ class HeroCarousel {
 
   updateSlides() {
     this.slides.forEach((slide, index) => {
-      slide.setAttribute('aria-hidden', index !== this.currentIndex);
-      slide.style.zIndex = index === this.currentIndex ? '1' : '0';
+      const isActive = index === this.currentIndex;
+      slide.setAttribute('aria-hidden', !isActive);
+      slide.style.zIndex = isActive ? '1' : '0';
     });
 
-    // Update dots
-    const dots = this.element.querySelectorAll(CONFIG.SELECTORS.DOT);
+    const dots = this.element.querySelectorAll(HERO_CONFIG.SELECTORS.DOT);
     dots.forEach((dot, index) => {
-      dot.classList.toggle(CONFIG.CLASSES.ACTIVE, index === this.currentIndex);
+      dot.classList.toggle(HERO_CONFIG.CLASSES.ACTIVE, index === this.currentIndex);
     });
   }
 
@@ -83,7 +85,7 @@ class HeroCarousel {
   }
 
   startAutoPlay() {
-    this.interval = setInterval(() => this.nextSlide(), CONFIG.SLIDE_INTERVAL);
+    this.interval = setInterval(() => this.nextSlide(), HERO_CONFIG.SLIDE_INTERVAL);
   }
 
   stopAutoPlay() {
@@ -97,16 +99,13 @@ class HeroCarousel {
 }
 
 export default function decorate(block) {
-  // Create wrapper for slides
   const wrapper = document.createElement('div');
   wrapper.className = 'hero-wrapper';
 
-  // Process each row as a slide
   [...block.children].forEach((row) => {
     const slide = document.createElement('div');
-    slide.className = CONFIG.CLASSES.SLIDE;
+    slide.className = HERO_CONFIG.CLASSES.SLIDE;
 
-    // Get image and content from columns
     const [imageCol, contentCol] = row.children;
     
     if (imageCol) {
@@ -119,7 +118,7 @@ export default function decorate(block) {
 
     if (contentCol) {
       const content = document.createElement('div');
-      content.className = CONFIG.CLASSES.CONTENT;
+      content.className = HERO_CONFIG.CLASSES.CONTENT;
       content.innerHTML = contentCol.innerHTML;
       slide.appendChild(content);
     }
@@ -127,11 +126,10 @@ export default function decorate(block) {
     wrapper.appendChild(slide);
   });
 
-  // Clear and update block content
   block.textContent = '';
   block.appendChild(wrapper);
 
-  // Initialize carousel
-  new HeroCarousel(wrapper);
+  const carousel = new HeroCarousel(wrapper);
+  return carousel;
 }
   

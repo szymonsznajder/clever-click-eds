@@ -1,14 +1,44 @@
 import { getMetadata } from '../../scripts/aem.js';
 import { loadFragment } from '../fragment/fragment.js';
 
-// media query match that indicates mobile/tablet width
-const isDesktop = window.matchMedia('(min-width: 900px)');
+const HEADER_CONFIG = {
+  BREAKPOINTS: {
+    DESKTOP: '(min-width: 900px)',
+  },
+  CLASSES: {
+    SCROLL_UP: 'scroll-up',
+    SCROLL_DOWN: 'scroll-down',
+    NAV_DROP: 'nav-drop',
+    ACTIVE: 'active',
+  },
+  SELECTORS: {
+    NAV: '#nav',
+    NAV_SECTIONS: '.nav-sections',
+    BUTTON_CONTAINER: '.button-container',
+  },
+  ASSETS: {
+    LOGO: '/prompt-master/images/fasCmsLogo.svg',
+    LOGO_ALT: 'FAS CMS Logo',
+  },
+  ARIA_LABELS: {
+    OPEN_NAV: 'Open navigation',
+    CLOSE_NAV: 'Close navigation',
+  },
+};
 
+// media query match that indicates mobile/tablet width
+const isDesktop = window.matchMedia(HEADER_CONFIG.BREAKPOINTS.DESKTOP);
+
+/**
+ * Handle escape key navigation
+ * @param {KeyboardEvent} e - Keyboard event
+ */
 function closeOnEscape(e) {
   if (e.code === 'Escape') {
     const nav = document.getElementById('nav');
-    const navSections = nav.querySelector('.nav-sections');
+    const navSections = nav.querySelector(HEADER_CONFIG.SELECTORS.NAV_SECTIONS);
     const navSectionExpanded = navSections.querySelector('[aria-expanded="true"]');
+
     if (navSectionExpanded && isDesktop.matches) {
       toggleAllNavSections(navSections);
       navSectionExpanded.focus();
@@ -22,7 +52,7 @@ function closeOnEscape(e) {
 function closeOnFocusLost(e) {
   const nav = e.currentTarget;
   if (!nav.contains(e.relatedTarget)) {
-    const navSections = nav.querySelector('.nav-sections');
+    const navSections = nav.querySelector(HEADER_CONFIG.SELECTORS.NAV_SECTIONS);
     const navSectionExpanded = navSections.querySelector('[aria-expanded="true"]');
     if (navSectionExpanded && isDesktop.matches) {
       toggleAllNavSections(navSections, false);
@@ -109,76 +139,85 @@ function initHeaderScroll() {
   });
 }
 
+/**
+ * Decorate the header block
+ * @param {HTMLElement} block - The header block element
+ */
 export default async function decorate(block) {
-  const navMeta = getMetadata('nav');
-  const navPath = navMeta ? new URL(navMeta, window.location).pathname : '/nav';
-  const fragment = await loadFragment(navPath);
+  try {
+    const navMeta = getMetadata('nav');
+    const navPath = navMeta ? new URL(navMeta, window.location).pathname : '/nav';
+    const fragment = await loadFragment(navPath);
 
-  block.textContent = '';
-  const nav = document.createElement('nav');
-  nav.id = 'nav';
-  while (fragment.firstElementChild) nav.append(fragment.firstElementChild);
+    block.textContent = '';
+    const nav = document.createElement('nav');
+    nav.id = 'nav';
+    while (fragment.firstElementChild) nav.append(fragment.firstElementChild);
 
-  const classes = ['brand', 'sections', 'tools'];
-  classes.forEach((c, i) => {
-    const section = nav.children[i];
-    if (section) section.classList.add(`nav-${c}`);
-  });
-
-  const navBrand = nav.querySelector('.nav-brand');
-  if (navBrand) {
-    const brandLink = navBrand.querySelector('.button');
-    if (brandLink) {
-      const logoImg = document.createElement('img');
-      logoImg.src = '/prompt-master/images/fasCmsLogo.svg';
-      logoImg.alt = 'FAS CMS Logo';
-      
-      const textSpan = document.createElement('span');
-      textSpan.textContent = brandLink.textContent;
-      
-      brandLink.textContent = '';
-      brandLink.appendChild(logoImg);
-      brandLink.appendChild(textSpan);
-      
-      brandLink.className = '';
-      brandLink.closest('.button-container').className = '';
-    }
-  }
-
-  const navSections = nav.querySelector('.nav-sections');
-  if (navSections) {
-    navSections.querySelectorAll(':scope .default-content-wrapper > ul > li').forEach((navSection) => {
-      if (navSection.querySelector('ul')) navSection.classList.add('nav-drop');
-      navSection.addEventListener('click', () => {
-        const expanded = navSection.getAttribute('aria-expanded') === 'true';
-        toggleAllNavSections(navSections);
-        navSection.setAttribute('aria-expanded', expanded ? 'false' : 'true');
-      });
+    const classes = ['brand', 'sections', 'tools'];
+    classes.forEach((c, i) => {
+      const section = nav.children[i];
+      if (section) section.classList.add(`nav-${c}`);
     });
-  }
 
-  const hamburger = document.createElement('div');
-  hamburger.classList.add('nav-hamburger');
-  hamburger.innerHTML = `<button type="button" aria-controls="nav" aria-label="Open navigation">
-      <span class="nav-hamburger-icon"></span>
-    </button>`;
-  hamburger.addEventListener('click', () => toggleMenu(nav, navSections));
-  nav.prepend(hamburger);
-  nav.setAttribute('aria-expanded', 'false');
-
-  toggleMenu(nav, navSections, false);
-
-  const navWrapper = document.createElement('div');
-  navWrapper.className = 'nav-wrapper';
-  navWrapper.append(nav);
-  block.append(navWrapper);
-
-  initHeaderScroll();
-  
-  const currentPath = window.location.pathname;
-  navSections.querySelectorAll('a').forEach((link) => {
-    if (link.getAttribute('href') === currentPath) {
-      link.classList.add('active');
+    const navBrand = nav.querySelector('.nav-brand');
+    if (navBrand) {
+      const brandLink = navBrand.querySelector('.button');
+      if (brandLink) {
+        const logoImg = document.createElement('img');
+        logoImg.src = HEADER_CONFIG.ASSETS.LOGO;
+        logoImg.alt = HEADER_CONFIG.ASSETS.LOGO_ALT;
+        
+        const textSpan = document.createElement('span');
+        textSpan.textContent = brandLink.textContent;
+        
+        brandLink.textContent = '';
+        brandLink.appendChild(logoImg);
+        brandLink.appendChild(textSpan);
+        
+        brandLink.className = '';
+        brandLink.closest(HEADER_CONFIG.SELECTORS.BUTTON_CONTAINER).className = '';
+      }
     }
-  });
+
+    const navSections = nav.querySelector(HEADER_CONFIG.SELECTORS.NAV_SECTIONS);
+    if (navSections) {
+      navSections.querySelectorAll(':scope .default-content-wrapper > ul > li').forEach((navSection) => {
+        if (navSection.querySelector('ul')) navSection.classList.add(HEADER_CONFIG.CLASSES.NAV_DROP);
+        navSection.addEventListener('click', () => {
+          const expanded = navSection.getAttribute('aria-expanded') === 'true';
+          toggleAllNavSections(navSections);
+          navSection.setAttribute('aria-expanded', expanded ? 'false' : 'true');
+        });
+      });
+    }
+
+    const hamburger = document.createElement('div');
+    hamburger.classList.add('nav-hamburger');
+    hamburger.innerHTML = `<button type="button" aria-controls="nav" aria-label="Open navigation">
+        <span class="nav-hamburger-icon"></span>
+      </button>`;
+    hamburger.addEventListener('click', () => toggleMenu(nav, navSections));
+    nav.prepend(hamburger);
+    nav.setAttribute('aria-expanded', 'false');
+
+    toggleMenu(nav, navSections, false);
+
+    const navWrapper = document.createElement('div');
+    navWrapper.className = 'nav-wrapper';
+    navWrapper.append(nav);
+    block.append(navWrapper);
+
+    initHeaderScroll();
+    
+    const currentPath = window.location.pathname;
+    navSections.querySelectorAll('a').forEach((link) => {
+      if (link.getAttribute('href') === currentPath) {
+        link.classList.add(HEADER_CONFIG.CLASSES.ACTIVE);
+      }
+    });
+  } catch (error) {
+    // eslint-disable-next-line no-console
+    console.error('Error decorating header:', error);
+  }
 }

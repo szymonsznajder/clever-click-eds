@@ -1,71 +1,95 @@
-// Configuration object for the hero video block
 const HEROVIDEO_CONFIG = {
-  AUTOPLAY_CLASS: 'autoplay',
-  MUTED_CLASS: 'muted',
-  LOOP_CLASS: 'loop',
-  CONTROLS_CLASS: 'controls',
+  CLASSES: {
+    CONTENT: 'herovideo-content',
+    PLAYER: 'herovideo-player',
+    OVERLAY: 'herovideo-overlay',
+  },
+  VARIATIONS: {
+    AUTOPLAY: 'autoplay',
+    MUTED: 'muted',
+    LOOP: 'loop',
+    CONTROLS: 'controls',
+  },
+  VIDEO: {
+    TYPE: 'video/mp4',
+  },
   ERROR_MESSAGE: 'Error loading video content',
 };
 
 /**
+ * Creates a video element with specified attributes
+ * @param {HTMLElement} block - The block element to check for variations
+ * @returns {HTMLVideoElement} Configured video element
+ */
+function createVideoElement(block) {
+  const video = document.createElement('video');
+  video.classList.add(HEROVIDEO_CONFIG.CLASSES.PLAYER);
+
+  // Set default attributes
+  const attributes = {
+    muted: true,
+    autoplay: true,
+    loop: true,
+    playsInline: true,
+    controls: block.classList.contains(HEROVIDEO_CONFIG.VARIATIONS.CONTROLS),
+  };
+
+  // Override defaults based on variations
+  if (!block.classList.contains(HEROVIDEO_CONFIG.VARIATIONS.AUTOPLAY)) {
+    attributes.autoplay = false;
+  }
+  if (!block.classList.contains(HEROVIDEO_CONFIG.VARIATIONS.MUTED)) {
+    attributes.muted = false;
+  }
+  if (!block.classList.contains(HEROVIDEO_CONFIG.VARIATIONS.LOOP)) {
+    attributes.loop = false;
+  }
+
+  // Apply attributes to video element
+  Object.entries(attributes).forEach(([key, value]) => {
+    video[key] = value;
+  });
+
+  return video;
+}
+
+/**
  * Decorates the hero video block
- * @param {HTMLElement} block The hero video block element
+ * @param {HTMLElement} block - The hero video block element
  */
 export default function decorate(block) {
-  // Get the first row which contains video information
-  const videoRow = block.children[0];
-  if (!videoRow) return;
+  try {
+    const videoRow = block.children[0];
+    if (!videoRow) return;
 
-  // Create video wrapper
-  const videoWrapper = document.createElement('div');
-  videoWrapper.classList.add('herovideo-content');
+    const videoWrapper = document.createElement('div');
+    videoWrapper.classList.add(HEROVIDEO_CONFIG.CLASSES.CONTENT);
 
-  // Create video element
-  const video = document.createElement('video');
-  video.classList.add('herovideo-player');
+    const video = createVideoElement(block);
 
-  // Set default video attributes
-  video.muted = true;
-  video.autoplay = true;
-  video.loop = true;
-  video.playsInline = true;
+    // Add video source
+    const videoSource = videoRow.querySelector('a');
+    if (videoSource) {
+      const source = document.createElement('source');
+      source.src = videoSource.href;
+      source.type = HEROVIDEO_CONFIG.VIDEO.TYPE;
+      video.appendChild(source);
+    }
 
-  // Check for block variations and apply corresponding settings
-  if (block.classList.contains(HEROVIDEO_CONFIG.CONTROLS_CLASS)) {
-    video.controls = true;
+    // Add overlay text if present
+    const overlayText = videoRow.children[1];
+    if (overlayText) {
+      const overlay = document.createElement('div');
+      overlay.classList.add(HEROVIDEO_CONFIG.CLASSES.OVERLAY);
+      overlay.innerHTML = overlayText.innerHTML;
+      videoWrapper.appendChild(overlay);
+    }
+
+    videoWrapper.appendChild(video);
+    block.textContent = '';
+    block.appendChild(videoWrapper);
+  } catch (error) {
+    // eslint-disable-next-line no-console
+    console.error(HEROVIDEO_CONFIG.ERROR_MESSAGE, error);
   }
-  if (!block.classList.contains(HEROVIDEO_CONFIG.AUTOPLAY_CLASS)) {
-    video.autoplay = false;
-  }
-  if (!block.classList.contains(HEROVIDEO_CONFIG.MUTED_CLASS)) {
-    video.muted = false;
-  }
-  if (!block.classList.contains(HEROVIDEO_CONFIG.LOOP_CLASS)) {
-    video.loop = false;
-  }
-
-  // Get video source from the first cell
-  const videoSource = videoRow.querySelector('a');
-  if (videoSource) {
-    const source = document.createElement('source');
-    source.src = videoSource.href;
-    source.type = 'video/mp4';
-    video.appendChild(source);
-  }
-
-  // Add overlay text if present in second cell
-  const overlayText = videoRow.children[1];
-  if (overlayText) {
-    const overlay = document.createElement('div');
-    overlay.classList.add('herovideo-overlay');
-    overlay.innerHTML = overlayText.innerHTML;
-    videoWrapper.appendChild(overlay);
-  }
-
-  // Add video to wrapper
-  videoWrapper.appendChild(video);
-  
-  // Clear block and add new content
-  block.textContent = '';
-  block.appendChild(videoWrapper);
 } 
