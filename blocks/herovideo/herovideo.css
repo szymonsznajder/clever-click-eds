@@ -1,0 +1,55 @@
+/* Hero Video Block configuration */
+.herovideo {
+  --herovideo-height: 100vh;
+  --herovideo-min-height: 400px;
+  --herovideo-overlay-bg: rgba(0, 0, 0, 0.4);
+  --herovideo-text-color: #ffffff;
+}
+
+/* Base styles */
+.herovideo-wrapper {
+  height: var(--herovideo-height);
+  min-height: var(--herovideo-min-height);
+  overflow: hidden;
+  position: relative;
+  width: 100%;
+}
+
+.herovideo-content {
+  height: 100%;
+  position: relative;
+  width: 100%;
+}
+
+.herovideo-player {
+  height: 100%;
+  left: 0;
+  object-fit: cover;
+  position: absolute;
+  top: 0;
+  width: 100%;
+}
+
+.herovideo-overlay {
+  align-items: center;
+  background: var(--herovideo-overlay-bg);
+  color: var(--herovideo-text-color);
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  justify-content: center;
+  left: 0;
+  padding: 2rem;
+  position: absolute;
+  text-align: center;
+  top: 0;
+  width: 100%;
+  z-index: 1;
+}
+
+/* Responsive styles */
+@media (max-width: 768px) {
+  .herovideo {
+    --herovideo-height: 60vh;
+  }
+} 
