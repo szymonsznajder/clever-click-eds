@@ -47,7 +47,7 @@ header .nav-brand img {
 
 /* Add the logo using background-image as fallback */
 header .nav-brand a::before {
-  background-image: url('../../images/fasCmsLogo.svg');
+  background-image: url('/prompt-master/images/fasCmsLogo.svg');
   background-position: center;
   background-repeat: no-repeat;
   background-size: 50%;
