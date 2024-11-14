@@ -8,7 +8,7 @@ const HERO_CONFIG = {
     NEXT: '.hero-next',
     DOTS: '.hero-dots',
     DOT: '.hero-dot',
-    ACTIVE: 'active'
+    ACTIVE: 'active',
   },
   CLASSES: {
     SLIDE: 'hero-slide',
@@ -18,11 +18,11 @@ const HERO_CONFIG = {
     NEXT: 'hero-next',
     DOTS: 'hero-dots',
     DOT: 'hero-dot',
-    ACTIVE: 'active'
+    ACTIVE: 'active',
   },
   ARIA_LABELS: {
-    SLIDE: 'Go to slide'
-  }
+    SLIDE: 'Go to slide',
+  },
 };
 
 class HeroCarousel {
@@ -31,7 +31,7 @@ class HeroCarousel {
     this.slides = [...element.querySelectorAll(HERO_CONFIG.SELECTORS.SLIDE)];
     this.currentIndex = 0;
     this.interval = null;
-    
+
     this.init();
   }
 
@@ -48,7 +48,7 @@ class HeroCarousel {
 
     const dots = document.createElement('div');
     dots.className = HERO_CONFIG.CLASSES.DOTS;
-    
+
     this.slides.forEach((_, index) => {
       const dot = document.createElement('button');
       dot.className = HERO_CONFIG.CLASSES.DOT;
@@ -107,7 +107,7 @@ export default function decorate(block) {
     slide.className = HERO_CONFIG.CLASSES.SLIDE;
 
     const [imageCol, contentCol] = row.children;
-    
+
     if (imageCol) {
       const picture = imageCol.querySelector('picture');
       if (picture) {
@@ -132,4 +132,3 @@ export default function decorate(block) {
   const carousel = new HeroCarousel(wrapper);
   return carousel;
 }
-  

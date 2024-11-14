@@ -1,4 +1,7 @@
+/* stylelint-disable no-descending-specificity */
+
 /* Hero core block */
+
 main .hero-container {
   clip-path: none;
   max-width: 100%;
@@ -13,7 +16,6 @@ main .hero-container {
 .hero {
   display: flex;
   max-height: 100vh;
-  /* min-height: 100vh; */
   position: relative;
   z-index: 1;
 }

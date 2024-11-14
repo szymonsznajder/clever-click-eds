@@ -2,8 +2,8 @@
 .herovideo {
   --herovideo-height: 100vh;
   --herovideo-min-height: 400px;
-  --herovideo-overlay-bg: rgba(0, 0, 0, 0.4);
-  --herovideo-text-color: #ffffff;
+  --herovideo-overlay-bg: rgb(0 0 0);
+  --herovideo-text-color: #fff;
 }
 
 /* Base styles */

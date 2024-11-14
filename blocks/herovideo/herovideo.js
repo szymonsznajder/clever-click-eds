@@ -92,4 +92,4 @@ export default function decorate(block) {
     // eslint-disable-next-line no-console
     console.error(HEROVIDEO_CONFIG.ERROR_MESSAGE, error);
   }
-} 
+}
