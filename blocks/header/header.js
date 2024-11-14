@@ -1,5 +1,6 @@
+/* eslint-disable import/extensions */
 /* eslint-disable no-use-before-define */
-import { getMetadata } from '../../scripts/ae.js';
+import { getMetadata } from '../../scripts/aem.js';
 import { loadFragment } from '../fragment/fragment.js';
 
 const HEADER_CONFIG = {

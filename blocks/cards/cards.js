@@ -1,4 +1,5 @@
-import { createOptimizedPicture } from '../../scripts/aem.js;
+/* eslint-disable import/extensions */
+import { createOptimizedPicture } from '../../scripts/aem.js';
 
 export default function decorate(block) {
   /* change to ul, li */
