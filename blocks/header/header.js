@@ -1,6 +1,6 @@
 /* eslint-disable no-use-before-define */
-import { getMetadata } from '../../scripts/aem';
-import { loadFragment } from '../fragment/fragment';
+import { getMetadata } from '../../scripts/ae.js';
+import { loadFragment } from '../fragment/fragment.js';
 
 const HEADER_CONFIG = {
   BREAKPOINTS: {

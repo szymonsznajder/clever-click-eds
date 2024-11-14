@@ -1,5 +1,6 @@
-import { getMetadata } from '../../scripts/aem';
-import { loadFragment } from '../fragment/fragment';
+/* eslint-disable import/extensions */
+import { getMetadata } from '../../scripts/aem.js';
+import { loadFragment } from '../fragment/fragment.js';
 
 /**
  * loads and decorates the footer
