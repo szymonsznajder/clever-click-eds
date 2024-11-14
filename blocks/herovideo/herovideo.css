@@ -48,7 +48,7 @@
 }
 
 /* Responsive styles */
-@media (max-width: 768px) {
+@media (width >= 768px) {
   .herovideo {
     --herovideo-height: 60vh;
   }
